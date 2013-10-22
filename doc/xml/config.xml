@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<db_xml>
+        <objet class_name="User" db_name="USER">
+        	<column class_column="firstName"	db_column="firstName"	type="string">	</column>
+        	<column class_column="lastName" 	db_column="lastName" 	type="string">	</column>
+        	<column class_column="email" 		db_column="email" 		type="string">	</column>
+        	<column class_column="userId" 		db_column="userId" 		type="int">		</column>                       
+        </objet>
+                
+        <objet class_name="Dvd" db_name="DVD">
+            <column class_column="titre" 		db_column="titre" 		type="String">	</column>
+            <column class_column="description" 	db_column="description" type="string">	</column>
+            <column class_column="prix" 		db_column="prix" 		type="int">		</column>
+            <column class_column="reduction" 	db_column="reduction" 	type="int">		</column>
+            <column class_column="dvdId" 		db_column="dvdId" 		type="int">		</column>
+         </objet>
+                
+         <objet class_name="K7" db_name="K7">
+            <column class_column="titre" 		db_column="titre" 		type="String">	</column>
+            <column class_column="description" 	db_column="description" type="string">	</column>
+            <column class_column="prix" 		db_column="prix" 		type="int">		</column>
+            <column class_column="reduction" 	db_column="reduction" 	type="int">		</column>
+            <column class_column="k7Id" 		db_column="k7Id" 		type="int">		</column>
+         </objet>
+                
+         <objet class_name="Game" db_name="GAME">
+            <column class_column="titre" 		db_column="titre" 		type="String">	</column>
+            <column class_column="description" 	db_column="description" type="string">	</column>
+            <column class_column="prix" 		db_column="prix" 		type="int">		</column>
+            <column class_column="reduction" 	db_column="reduction" 	type="int">		</column>
+            <column class_column="gameId" 		db_column="gameId" 		type="int">		</column>
+         </objet>
+</db_xml>
