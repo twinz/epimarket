@@ -1,6 +1,6 @@
 package fr.shortcircuit.model;
 
-public class User
+public class User extends ProductElement
 {
 	private String		firstName;
 	private String		lastName;

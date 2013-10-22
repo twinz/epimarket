@@ -18,34 +18,27 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import fr.shortcircuit.gui.IXMLViewConstants;
-import fr.shortcircuit.model.Column;
+import fr.shortcircuit.model.DBColumn;
 import fr.shortcircuit.model.ProductElement;
+import fr.shortcircuit.db.*;
 
 
 public class MySaxReflecter<T extends Collection<ProductElement>> extends DefaultHandler implements IXMLViewConstants, IXMLFactory
 {
 	private Map<String, Collection<ProductElement>>		mapType, mapGenre;
-	
 	private T											collectionElt;
-
 	private String 										fileName;
-
 	private Object										currentObject;
-	
 	private Collection									currentCollection;
-
 	private String 										STR_PACKAGE_PREFIX	= "fr.shortcircuit.model"; 
 	
-
+	public	DBConfig									dbConfig;
 	
 	public MySaxReflecter(T collectionElt, String fileName)
 	{
 		createStructures(collectionElt, fileName);
-
 		createSaxParser();
-		
-		//mapContent();
-		
+		mapContent();
 		setParents();
 	}
 	
@@ -80,25 +73,20 @@ public class MySaxReflecter<T extends Collection<ProductElement>> extends Defaul
 
 	public void startElement(String namespaceURI, String sName, String qName, Attributes attrs) throws SAXException
 	{
-		System.out.println("---> dans startElement/ namespace = " + namespaceURI + "|sName = " + sName + "|qName = " + qName + "| att = " + attrs.getValue(0));
-		//Verification du type dans la classe Constants
-		//{"ProductElement", "GameElement", "DvdElement", "K7Element", "actor"};
+		this.dbConfig = new DBConfig();
+		
 		if (LIST_AUTOMATION_SUPPORTED_CLASS.contains(qName))  
 	  	{
-			if (!qName.equalsIgnoreCase("column"))
+			if (qName.equals("object"))// creer une LigneList
 			{
-				System.out.println("--> dans autre");
-				currentCollection = collectionElt;
+				this.dbConfig.dbList = new DBList();
 			}
-			else if (!(currentObject instanceof Column)) 
+			
+			else if (qName.equals("column"))//creer une columnList
 			{
-				System.out.println("--> dans actor");
-				currentCollection = ((ProductElement) currentObject).getColumn();
-				System.out.println("--> apres actor");
+				
 			}
-	  		//reflectElement(qName, attrs, currentCollection);
-			reflectElement(attrs.getValue(0), attrs, currentCollection);
-	  		System.out.println("--> apres");
+			reflectElement(qName, attrs, currentCollection);
 	  	}
 	}
 
@@ -115,7 +103,6 @@ public class MySaxReflecter<T extends Collection<ProductElement>> extends Defaul
 	{
 		try
 		{
-			System.out.println("className = " + className);
 			Class associatedClass								= Class.forName(STR_PACKAGE_PREFIX + "." + className);
 			Object newInstance									= associatedClass.newInstance();
 			currentObject										= newInstance;
@@ -138,8 +125,8 @@ public class MySaxReflecter<T extends Collection<ProductElement>> extends Defaul
 		mapType													= new HashMap();
 		mapGenre												= new TreeMap();
 
-		reflectMap("ProductElement", "price", collectionElt, mapType);
-		reflectMap("ProductElement", "genre", collectionElt, mapGenre);
+		//reflectMap("ProductElement", "price", collectionElt, mapType);
+		mapGenre = reflectMap("ProductElement", "class_name", collectionElt, mapGenre);
 	}
 	
 	
@@ -147,7 +134,6 @@ public class MySaxReflecter<T extends Collection<ProductElement>> extends Defaul
 	{
 		try
 		{
-			//Referencement du "Member" utilise: optimisation du cout de l'algo
 			Field eltField									= Class.forName(STR_PACKAGE_PREFIX + "." + className).getField(publicKeyField);
 			Iterator iteratorElt							= collection2map.iterator();
 		
@@ -158,7 +144,6 @@ public class MySaxReflecter<T extends Collection<ProductElement>> extends Defaul
 					Object elt								= iteratorElt.next();		
 					Object memberValue						= eltField.get(elt);
 					
-
 					if (memberValue != null)
 					{
 						Collection collectionEntry				= (Collection) mapElt.get(memberValue.toString());	
@@ -167,9 +152,7 @@ public class MySaxReflecter<T extends Collection<ProductElement>> extends Defaul
 						{
 							//collectionEntry					= new Vector(); //pas de tri sur les entrees
 							collectionEntry						= new TreeSet(); //trie et ordonne, ProductElement isAssignableFrom(Comparable) !
-							
 							collectionEntry.add(elt);	
-						
 							mapElt.put(eltField.get(elt).toString(), collectionEntry);
 						}
 						else
@@ -187,7 +170,7 @@ public class MySaxReflecter<T extends Collection<ProductElement>> extends Defaul
 	public void setParents()
 	{
 		for (ProductElement product : collectionElt)
-			for (Column a : product.getColumn())
+			for (DBColumn a : product.getColumn())
 				a.setParent(product);
 	}
 

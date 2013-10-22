@@ -7,7 +7,7 @@ import fr.shortcircuit.xml.IXMLObject;
 
 public class ProductElement implements Comparable, IXMLObject
 {
-	public Collection<Column>		column = new ArrayList();
+	public Collection<DBColumn>		column = new ArrayList();
 	
 	//declared as public to allow java.lang.reflect.Field read/write access.
 	public String 					class_name, db_name, class_column, db_column, type;
@@ -49,10 +49,10 @@ public class ProductElement implements Comparable, IXMLObject
 	//Getters, Setters, and Add
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	public void addActor(Column a)							{column.add(a);}
+	public void addActor(DBColumn a)							{column.add(a);}
 
 	
-	public Collection<Column> getColumn() 					{return column;}
+	public Collection<DBColumn> getColumn() 					{return column;}
 	public int getCoefBonus() 								{return coefBonus;}
 	public String getClass_name()							{return class_name;}
 	public String getDb_name()								{return db_name;}
@@ -60,7 +60,7 @@ public class ProductElement implements Comparable, IXMLObject
 	public String getDb_column()							{return db_column;}
 	public String getType()									{return type;}
 	
-	public void setColumn(Collection<Column> column)		{this.column 			= column;}
+	public void setColumn(Collection<DBColumn> column)		{this.column 			= column;}
 	public void setCoefBonus(int coefBonus) 				{this.coefBonus 		= coefBonus;}
 	public void setClass_name(String id)					{this.class_name		= id;}
 	public void setDb_name(String designation)				{this.db_name			= designation;}
@@ -93,7 +93,7 @@ public class ProductElement implements Comparable, IXMLObject
 		{
 			bufContent.append("\r\n <actors>");
 			
-			for (Column a : column)
+			for (DBColumn a : column)
 				bufContent.append("\r\n  " + a.toXmlString());
 				
 			bufContent.append("\r\n </actors>");	
