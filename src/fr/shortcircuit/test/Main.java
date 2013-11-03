@@ -1,28 +1,31 @@
 package fr.shortcircuit.test;
 
 import java.util.Vector;
+
 import fr.shortcircuit.model.*;
-import fr.shortcircuit.xml.MySaxReflecter;
+import fr.shortcircuit.db.*;
 
 public class Main 
 {
-	public MySaxReflecter			saxReflectedParser;
+	public DBFacade			dbFacade;
+	static Main				test;
 
 
 	
 	public static void main(String args[])
 	{		
-		Main newAppli			= new Main();		
+		test			= new Main();	
+		
+		User user = new User("Alexandre", "MARTENS", "alexmartens@hotmail.fr", 5);
+		test.dbFacade.insert(user);
 	}
 	
 	public Main()
 	{		
-		createStructures();
+		System.out.println("----->Avant facade(main)");
+		this.dbFacade = new DBFacade();
+		System.out.println("----->Apres facade(main)");
 	}	
 	
-	public void createStructures()
-	{	
-		this.saxReflectedParser	= new MySaxReflecter<Vector<ProductElement>>(new Vector<ProductElement>(), "doc/xml/config.xml");
-	}
 
 }

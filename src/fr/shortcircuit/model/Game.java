@@ -1,6 +1,6 @@
 package fr.shortcircuit.model;
 
-public class Game extends ProductElement
+public class Game
 {
 	private	String		titre;
 	private String		description;

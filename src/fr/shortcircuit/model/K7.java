@@ -1,6 +1,6 @@
 package fr.shortcircuit.model;
 
-public class K7 extends ProductElement
+public class K7 
 {
 	private	String		titre;
 	private String		description;

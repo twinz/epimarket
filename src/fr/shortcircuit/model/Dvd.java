@@ -1,6 +1,6 @@
 package fr.shortcircuit.model;
 
-public class Dvd extends ProductElement
+public class Dvd
 {
 	private	String		titre;
 	private String		description;

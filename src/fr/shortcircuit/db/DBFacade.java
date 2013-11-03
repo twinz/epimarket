@@ -3,17 +3,31 @@ package fr.shortcircuit.db;
 import java.util.Vector;
 
 import fr.shortcircuit.db.*;
-import fr.shortcircuit.model.ProductElement;
-import fr.shortcircuit.test.Main;
-import fr.shortcircuit.xml.MySaxReflecter;
+import fr.shortcircuit.xml.Parser;
+import fr.shortcircuit.model.*;
 
 
 public class DBFacade
 {	
-	public 	DBManager			MyDbManager;
+	public 	DBManager			dbManager;
+	public	DBConfig			dbConfig;
+	public  DBFactory			dbfactory;
 	
 	public DBFacade()
 	{
-		this.MyDbManager = new DBManager("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/test", "root", "root");
+		dbfactory = new DBFactory();
+		System.out.println("----->Avant DBManager");
+		this.dbManager = new DBManager("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/test", "root", "root");
+		System.out.println("----->Apres DBManager");
+		
+		dbConfig = new DBConfig();
+
+		
+	}
+	
+	public void insert(Object obj){
+		System.out.println("Debut de insert(facade)");
+		dbManager.Insert_sql_lite(obj);
+		System.out.println("fin de insert(facade)");
 	}
 }

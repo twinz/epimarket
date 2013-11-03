@@ -28,6 +28,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import fr.shortcircuit.model.*;
+
 
 public class DBManager
 {
@@ -48,6 +50,8 @@ public class DBManager
 		public String				strUser;
 		public String				strPass;
 		
+		public DBConfig				dbConfig;
+		public DBFactory			dbFactory;
 
 		public DBManager(String strDriver, String strConnectURL, String strUser, String strPass)
 		{
@@ -57,14 +61,10 @@ public class DBManager
 				this.strConnectURL		=	strConnectURL;
 				this.strUser 			=	strUser;
 				this.strPass 			=	strPass;
+				this.dbConfig			=	dbFactory.parser.getDbConfig();
 			
-				//1ere etape: Chargement de la classe de driver
 				Class.forName(this.strDriver);
-					
-	 			//2eme etape: Creation de l'object de connection
 				myConnect 			=	DriverManager.getConnection(this.strConnectURL, this.strUser, this.strPass);
-			
-				//Option: Acces a un jeu de meta information sur la base avec laquelle on dialogue.
 				myDbMetaData 		=	myConnect.getMetaData();
 
 				System.out.println("DbManager: dbConnect: show DataBase MetaData:");
@@ -86,6 +86,7 @@ public class DBManager
 		{
 			try
 			{
+				System.out.println("Debut de insert(Manager)");
 				Method[] 	tab_method 	=	obj.getClass().getMethods();
 				String		sql			=	"";
 				String		key			=	"";
@@ -101,14 +102,38 @@ public class DBManager
 				}
 				key = key.substring(0, key.length() - 1);
 				value = value.substring(0, value.length() - 1);
-				sql = "INSERT INTO '" + obj.getClass().getName().toUpperCase() + "' (" + key + ") VALUES (" + value + ");";
+				sql = "INSERT INTO '" + check_struck_db(obj.getClass().getName()) + "' (" + key + ") VALUES (" + value + ");";
 				Execute_query("Insert", sql);
+				System.out.println("fin de insert(manager)");
 			}
 			catch (Exception e)
 			{
 				
 			}		
 		}
+		
+		public String	check_struck_db(String name)
+		{
+			System.out.println("debut de check_db");
+			String res = "";
+			System.out.println("db = " + dbConfig);
+			for (int j = 0; j != dbConfig.getDBList().size(); j++)
+			{
+				System.out.println("-Ligne--> class_name = " + dbConfig.getDBList().get(j).getClass_name() + "\t, db_name = " + dbConfig.getDBList().get(j).getDb_name());
+				if (name == dbConfig.getDBList().get(j).getClass_name())
+				{
+					res =  dbConfig.getDBList().get(j).getDb_name();
+					System.out.println("fin de check)");
+					return res;
+				}
+				
+			}	
+			System.out.println("fin de check avec res = " + res + "|");
+			return res;
+		}
+		
+		
+		
 		
 		// DELETE
 		public void Delete_sql_lite(Object obj)

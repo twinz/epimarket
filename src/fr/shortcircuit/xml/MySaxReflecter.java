@@ -18,11 +18,12 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import fr.shortcircuit.gui.IXMLViewConstants;
-import fr.shortcircuit.model.DBColumn;
-import fr.shortcircuit.model.ProductElement;
+//import fr.shortcircuit.model.DBColumn;
+//import fr.shortcircuit.model.ProductElement;
 import fr.shortcircuit.db.*;
+import fr.shortcircuit.model.*;
 
-
+/*
 public class MySaxReflecter<T extends Collection<ProductElement>> extends DefaultHandler implements IXMLViewConstants, IXMLFactory
 {
 	private Map<String, Collection<ProductElement>>		mapType, mapGenre;
@@ -32,14 +33,17 @@ public class MySaxReflecter<T extends Collection<ProductElement>> extends Defaul
 	private Collection									currentCollection;
 	private String 										STR_PACKAGE_PREFIX	= "fr.shortcircuit.model"; 
 	
+	//public	DBConfig									dbConfig;
 	public	DBConfig									dbConfig;
+	public	DBLigne										dbLigne;
+	public	DBColumn									dbColumn;
 	
 	public MySaxReflecter(T collectionElt, String fileName)
 	{
 		createStructures(collectionElt, fileName);
 		createSaxParser();
-		mapContent();
-		setParents();
+		//mapContent();
+		//setParents();
 	}
 	
 	public void createStructures(T collectionElt, String fileName)
@@ -50,19 +54,17 @@ public class MySaxReflecter<T extends Collection<ProductElement>> extends Defaul
 		System.out.println("MySaxReflecter: starts parsing " + fileName);	
 	}
 
-	//currentCollection				= collectionElt;
-
-	/** Instanciation du parser Sax affecte. */ 	
 	public void createSaxParser()
 	{		
 	  	SAXParserFactory factory 		= SAXParserFactory.newInstance();
 	
 	   	try 
 	   	{
+	   		//**
+	   		this.dbConfig = new DBConfig();
+	   		//**
 	    	SAXParser saxParser 		= factory.newSAXParser();
-	
 	    	saxParser.parse(new File(fileName), this); 
-	    	
 		}
 		catch (Throwable t) 	{System.out.println("createSaxParser: " + t.toString()); t.printStackTrace();}
 	}
@@ -73,20 +75,17 @@ public class MySaxReflecter<T extends Collection<ProductElement>> extends Defaul
 
 	public void startElement(String namespaceURI, String sName, String qName, Attributes attrs) throws SAXException
 	{
-		this.dbConfig = new DBConfig();
-		
 		if (LIST_AUTOMATION_SUPPORTED_CLASS.contains(qName))  
 	  	{
-			if (qName.equals("object"))// creer une LigneList
+			if (!qName.equalsIgnoreCase("Column"))
 			{
-				this.dbConfig.dbList = new DBList();
+
 			}
-			
-			else if (qName.equals("column"))//creer une columnList
+			else
 			{
-				
+				currentCollection = ((DBLigne) currentObject).getColumnslist();
 			}
-			reflectElement(qName, attrs, currentCollection);
+	  		reflectElement(qName, attrs, dbConfig);
 	  	}
 	}
 
@@ -99,11 +98,12 @@ public class MySaxReflecter<T extends Collection<ProductElement>> extends Defaul
 	//Sub-parsing methods : create, chain, and feed objects 
 	///////////////////////////////////////////////////////
 	
-	public void reflectElement(String className, Attributes attrs, Collection collectionStorer)
+	public void reflectElement(String className, Attributes attrs, DBConfig dbConfig)
 	{
 		try
 		{
-			Class associatedClass								= Class.forName(STR_PACKAGE_PREFIX + "." + className);
+			System.out.println("className = " + className);
+			Class associatedClass								= Class.forName(STR_PACKAGE_PREFIX + "." + "DB" + className);
 			Object newInstance									= associatedClass.newInstance();
 			currentObject										= newInstance;
 			
@@ -113,6 +113,7 @@ public class MySaxReflecter<T extends Collection<ProductElement>> extends Defaul
 				System.out.println("Name = " + attrs.getQName(i) + ", Value = " + attrs.getValue(i));
 			}
 			collectionStorer.add(newInstance);
+			System.out.println("<--> newInstance = " + newInstance);
 			System.out.println("<--> collection = " + collectionStorer);
 			System.out.println("\n");
 		}
@@ -159,7 +160,7 @@ public class MySaxReflecter<T extends Collection<ProductElement>> extends Defaul
 							collectionEntry.add(elt);
 					}
 				}
-				catch (Exception e) {System.out.println(e.toString());/*e.printStackTrace();*/}		
+				catch (Exception e) {System.out.println(e.toString());}		
 			}	
 		}
 		catch (Exception e) {System.out.println(e.toString());e.printStackTrace();}
@@ -191,3 +192,4 @@ public class MySaxReflecter<T extends Collection<ProductElement>> extends Defaul
 
 	
 }
+*/
