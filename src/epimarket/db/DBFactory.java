@@ -13,10 +13,7 @@ public class DBFactory
 	
 	public DBFactory()
 	{
-		System.out.println("avant parser (factory)");
 		this.parser	= new Parser();
-		System.out.println("apres parser (factory)");
-		
 	}
 
 	public Parser getParser() {

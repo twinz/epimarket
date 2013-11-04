@@ -6,8 +6,8 @@ CREATE TABLE `USER` (
 `firstName` VARCHAR( 50 ) NOT NULL ,
 `lastName` VARCHAR( 50 ) NOT NULL ,
 `email` VARCHAR( 50 ) NOT NULL ,
-`userId` INT AUTO_INCREMENT ,
-PRIMARY KEY ( `userId` )
+`Id` INT AUTO_INCREMENT ,
+PRIMARY KEY ( `Id` )
 );
 
 CREATE TABLE `DVD` (
@@ -15,8 +15,8 @@ CREATE TABLE `DVD` (
 `descritpion` VARCHAR( 50 ) NOT NULL ,
 `prix` int NOT NULL ,
 `reduction` int NOT NULL ,
-`dvdId` INT AUTO_INCREMENT ,
-PRIMARY KEY ( `dvdId` )
+`Id` INT AUTO_INCREMENT ,
+PRIMARY KEY ( `Id` )
 );
 
 CREATE TABLE `K7` (
@@ -24,8 +24,8 @@ CREATE TABLE `K7` (
 `descritpion` VARCHAR( 50 ) NOT NULL ,
 `prix` int NOT NULL ,
 `reduction` int NOT NULL ,
-`k7Id` INT AUTO_INCREMENT ,
-PRIMARY KEY ( `k7Id` )
+`Id` INT AUTO_INCREMENT ,
+PRIMARY KEY ( `Id` )
 );
 
 CREATE TABLE `GAME` (
@@ -33,7 +33,6 @@ CREATE TABLE `GAME` (
 `descritpion` VARCHAR( 50 ) NOT NULL ,
 `prix` int NOT NULL ,
 `reduction` int NOT NULL ,
-`gameId` INT AUTO_INCREMENT ,
-PRIMARY KEY ( `gameId` )
+`Id` INT AUTO_INCREMENT ,
+PRIMARY KEY ( `Id` )
 );
-

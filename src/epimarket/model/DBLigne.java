@@ -11,7 +11,7 @@ public class DBLigne
 {
 	private String 					class_name;
 	private String					db_name;
-	private ArrayList<DBColumn>				columns;
+	private ArrayList<DBColumn>		columns;
 	
 	public DBLigne()
 	{

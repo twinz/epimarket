@@ -4,7 +4,7 @@
         	<Column class_name="firstName"	db_column="firstName"	type="string">	</Column>
         	<Column class_name="lastName"	db_column="lastName" 	type="string">	</Column>
         	<Column class_name="email"		db_column="email" 		type="string">	</Column>
-        	<Column class_name="userId"		db_column="userId" 		type="int">		</Column>                       
+        	<Column class_name="Id"			db_column="Id" 			type="int">		</Column>                       
         </Ligne>
   
         <Ligne class_name="Dvd" db_name="DVD">
@@ -12,7 +12,7 @@
             <Column class_name="description" db_column="description" type="string">	</Column>
             <Column class_name="prix" 		db_column="prix" 		type="int">		</Column>
             <Column class_name="reduction"	db_column="reduction" 	type="int">		</Column>
-            <Column class_name="dvdId" 		db_column="dvdId" 		type="int">		</Column>
+            <Column class_name="Id" 		db_column="Id" 			type="int">		</Column>
          </Ligne>
                 
          <Ligne class_name="K7" db_name="K7">
@@ -20,7 +20,7 @@
             <Column class_name="description" db_column="description" type="string">	</Column>
             <Column class_name="prix" 		db_column="prix" 		type="int">		</Column>
             <Column class_name="reduction"	db_column="reduction" 	type="int">		</Column>
-            <Column class_name="k7Id" 		db_column="k7Id" 		type="int">		</Column>
+            <Column class_name="Id" 		db_column="Id" 			type="int">		</Column>
          </Ligne>
                 
          <Ligne class_name="Game" db_name="GAME">
@@ -28,7 +28,7 @@
             <Column class_name="description" db_column="description" type="string">	</Column>
             <Column class_name="prix" 		db_column="prix" 		type="int">		</Column>
             <Column class_name="reduction"	db_column="reduction" 	type="int">		</Column>
-            <Column class_name="gameId" 	db_column="gameId" 		type="int">		</Column>
+            <Column class_name="Id" 		db_column="Id" 			type="int">		</Column>
          </Ligne>
 
 </db_xml>

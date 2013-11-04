@@ -1,6 +1,6 @@
 DROP DATABASE epimarket;
 CREATE DATABASE `epimarket` ;
-use java;
+use epimarket;
 
 CREATE TABLE `USER` (
 `firstName` VARCHAR( 50 ) NOT NULL ,
@@ -36,4 +36,3 @@ CREATE TABLE `GAME` (
 `gameId` INT AUTO_INCREMENT ,
 PRIMARY KEY ( `gameId` )
 );
-

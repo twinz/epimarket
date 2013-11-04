@@ -36,4 +36,3 @@ CREATE TABLE `GAME` (
 `gameId` INT AUTO_INCREMENT ,
 PRIMARY KEY ( `gameId` )
 );
-

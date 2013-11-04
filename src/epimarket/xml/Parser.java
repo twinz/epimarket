@@ -30,21 +30,17 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-public class Parser{
+public class Parser {
 
-	public DBConfig 			dbConfig = new DBConfig();
-	public DBLigne 				dbLigne = new DBLigne();
-	public DBColumn 			dbColumn = new DBColumn();
-	public ArrayList<DBColumn> 	listColumn = new ArrayList<DBColumn>();
-	public ArrayList<DBLigne> 	listLigne = new ArrayList<DBLigne>();
-	
-	
-	
-	public ArrayList<DBConfig> 	test = new ArrayList<DBConfig>();
+	public DBConfig dbConfig = new DBConfig();
+	public DBLigne dbLigne = new DBLigne();
+	public DBColumn dbColumn = new DBColumn();
+	public ArrayList<DBColumn> listColumn = new ArrayList<DBColumn>();
+	public ArrayList<DBLigne> listLigne = new ArrayList<DBLigne>();
 
 	public Parser() {
 		init();
-		aff();
+		//aff();
 	}
 
 	public void init() {
@@ -60,7 +56,6 @@ public class Parser{
 			builder = builderFactory.newDocumentBuilder();
 			Document xmlDoc = builder.parse(new File("doc/xml/config.xml"));
 			ligne(xmlDoc.getDocumentElement());
-			
 
 			dbLigne.setColumns(listColumn);
 			listLigne.add(dbLigne);
@@ -72,22 +67,22 @@ public class Parser{
 		}
 	}
 
-	public void ligne(Node node ) {
+	public void ligne(Node node) {
 		try {
 			if (node instanceof Element && node.hasAttributes()) {
 
 				NamedNodeMap attrs = node.getAttributes();
 				for (int i = 0; i < attrs.getLength(); i++) {
 					Attr attribute = (Attr) attrs.item(i);
-					
+
 					stock_data(attribute.getName(), attribute.getValue(),
-							node.getLocalName());	
+							node.getLocalName());
 				}
-				 if (node.getLocalName() == "Column") {
-					 {
-						 listColumn.add(dbColumn);
-						 dbColumn = new DBColumn();
-					 }
+				if (node.getLocalName() == "Column") {
+					{
+						listColumn.add(dbColumn);
+						dbColumn = new DBColumn();
+					}
 				}
 			}
 
@@ -95,7 +90,7 @@ public class Parser{
 			if (list.getLength() > 0) {
 				for (int i = 0; i < list.getLength(); i++)
 					ligne(list.item(i));
-				
+
 			}
 		} catch (Exception e) {
 			System.out.println("reflectElement: " + e.toString());
@@ -105,11 +100,11 @@ public class Parser{
 
 	public void stock_data(String name, String value, String ligne_name) {
 		try {
-			if (ligne_name == "Ligne") { 
+			if (ligne_name == "Ligne") {
 				if (listColumn.size() != 0)
 					add();
 				BeanUtils.setProperty(dbLigne, name, value);
-			} else if (ligne_name == "Column"){
+			} else if (ligne_name == "Column") {
 				BeanUtils.setProperty(dbColumn, name, value);
 			}
 		} catch (Exception e) {
@@ -117,49 +112,35 @@ public class Parser{
 			e.printStackTrace();
 		}
 	}
-	
-	public void add()
-	{
+
+	public void add() {
 		dbLigne.setColumns(listColumn);
 		listColumn = new ArrayList<DBColumn>();
 		listLigne.add(dbLigne);
 		dbLigne = new DBLigne();
 	}
-	
-	
-	public void aff()
-	{
-		if (dbConfig.getDBList() != null)
-		{
-		System.out.println("AFFICHAGE DES STRUCTURES");
-			for (int j = 0; j != dbConfig.getDBList().size(); j++)
-			{
-				System.out.println("\n-Ligne--> class_name = " + dbConfig.getDBList().get(j).getClass_name() + "\t, db_name = " + dbConfig.getDBList().get(j).getDb_name());
-				for (int k = 0; k != dbConfig.getDBList().get(j).getColumns().size(); k++)
-					System.out.println("\t|\n\t=>Column= class_name = " + dbConfig.getDBList().get(j).getColumns().get(k).getclass_name() + ", db_name = " + dbConfig.getDBList().get(j).getColumns().get(k).getdb_column() + ", type = " + dbConfig.getDBList().get(j).getColumns().get(k).gettype());
+
+	public void aff() {
+		if (dbConfig.getDBList() != null) {
+			for (int j = 0; j != dbConfig.getDBList().size(); j++) {
+				System.out.println("\n-Ligne--> class_name = "
+						+ dbConfig.getDBList().get(j).getClass_name()
+						+ "\t, db_name = "
+						+ dbConfig.getDBList().get(j).getDb_name());
+				for (int k = 0; k != dbConfig.getDBList().get(j).getColumns()
+						.size(); k++)
+					System.out.println("\t|\n\t=>Column= class_name = "
+							+ dbConfig.getDBList().get(j).getColumns().get(k)
+									.getclass_name()
+							+ ", db_name = "
+							+ dbConfig.getDBList().get(j).getColumns().get(k)
+									.getdb_column()
+							+ ", type = "
+							+ dbConfig.getDBList().get(j).getColumns().get(k)
+									.gettype());
 			}
 		}
 	}
-	
-	public void ligne()
-	{
-		System.out.println("AFFICHER LA LIGNE\nclass = " + dbLigne.getClass_name() + ", db = " + dbLigne.getDb_name());
-		for (int i = 0; i != dbLigne.getColumns().size(); i++)
-		{
-			System.out.println("column = class = " + dbLigne.getColumns().get(i).getclass_name() + ", db = " + dbLigne.getColumns().get(i).getdb_column() + ", type = " + dbLigne.getColumns().get(i).gettype());
-		}
-	}
-	
-	
-	public void afftest()
-	{
-		System.out.println("AFFICHAGE DES STRUCTURES TEST");
-		for (int a = 0; a != test.size(); a++)
-		{
-			System.out.println("\n-Ligne--> class_name = " + test.get(a).getDBList().get(0).getClass_name() + ", db_name = " + test.get(a).getDBList().get(0).getDb_name());
-		}
-	}
-	
 
 	public DBConfig getDbConfig() {
 		return dbConfig;
@@ -168,7 +149,5 @@ public class Parser{
 	public void setDbConfig(DBConfig dbConfig) {
 		this.dbConfig = dbConfig;
 	}
-	
-	
-	
+
 }

@@ -24,6 +24,7 @@ import java.util.TreeSet;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -33,13 +34,10 @@ import epimarket.model.*;
 
 public class DBManager
 {
-	//Objects spécifiques aux differents appels vers les bases (locales ou distantes).	
-	// connect ... db manager
 		public Connection			myConnect;	
 		public Statement			myState;
 		public ResultSet			myResultSet;
 
-		//Objects de Meta-Information sur la Database connectée, et sur la requête effectuée.
 		public DatabaseMetaData		myDbMetaData;
 		public ResultSetMetaData	myResultSetMetaData;
 		
@@ -54,7 +52,6 @@ public class DBManager
 		public DBFactory			dbFactory;
 		public DBConfig				dbConfig;
 		
-		
 
 		public DBManager(String strDriver, String strConnectURL, String strUser, String strPass, DBConfig dbConfig)
 		{
@@ -64,32 +61,26 @@ public class DBManager
 				this.strConnectURL		=	strConnectURL;
 				this.strUser 			=	strUser;
 				this.strPass 			=	strPass;
-				this.dbConfig				=	dbConfig;
+				this.dbConfig			=	dbConfig;
 			
-				Class.forName(this.strDriver);
+				Class.forName(this.strDriver);//
 				myConnect 			=	DriverManager.getConnection(this.strConnectURL, this.strUser, this.strPass);
-				myDbMetaData 		=	myConnect.getMetaData();
+				/*myDbMetaData 		=	myConnect.getMetaData();
 
 				System.out.println("DbManager: dbConnect: show DataBase MetaData:");
 				System.out.println("DbManager: dbConnect: productName=" 	+ myDbMetaData.getDatabaseProductName());
-				System.out.println("DbManager: dbConnect: productVersion=" 	+ myDbMetaData.getDatabaseProductVersion());
+				System.out.println("DbManager: dbConnect: productVersion=" 	+ myDbMetaData.getDatabaseProductVersion());*/
 			}
-			catch (Exception e)
-			{
-				
-			}	
+			catch (ClassNotFoundException e) 	{System.out.println("dbConnect ClassNotFoundException: " + e.toString()); e.printStackTrace();}	
+			catch (Exception e) 				{System.out.println("dbConnect Exception: " + e.toString()); 	e.printStackTrace();}		
 		}
-	
-		// probleme met des '' meme pour les int
-		// peut etre tous mettre en string et apres transformer les string pour les nbr en int
 		
 		
 		// INSERT
-		public void Insert_sql_lite(Object obj) // METHODE
+		public void insertSqlLite(Object obj) // METHODE
 		{
 			try
 			{
-				System.out.println("Debut de insert(Manager)");
 				Method[] 	tab_method 	=	obj.getClass().getMethods();
 				String		sql			=	"";
 				String		key			=	"";
@@ -97,24 +88,160 @@ public class DBManager
 				
 				for (int i = 0; i < tab_method.length; i++)
 				{
-					if (tab_method[i].getName().subSequence(0, 3).equals("get"))
+					if (tab_method[i].getName().subSequence(0, 3).equals("get") && !(tab_method[i].getName().equals("getClass")))
 					{
-						key 	+= "'" + tab_method[i].getName().subSequence(3, tab_method[i].getName().length()).toString() + "',";
-						value	+= "'" + tab_method[i].invoke(obj) + "',";		 
+						key 	+= check_struck_db_attribue(tab_method[i].getName().subSequence(3, tab_method[i].getName().length()).toString()) + ",";
+						if (tab_method[i].getName().equals("getId"))
+							value	+= tab_method[i].invoke(obj) + ",";
+						else
+							value	+= "\"" + tab_method[i].invoke(obj) + "\",";		 
 					}
 				}
-				key = key.substring(0, key.length() - 1);
+				key = key.substring(0, key.length() - 4);
 				value = value.substring(0, value.length() - 1);
+				key += ",Id";
 				
-				sql = "INSERT INTO '" + check_struck_db(obj.getClass().getSimpleName()) + "' (" + key + ") VALUES (" + value + ");";
+				sql = "INSERT INTO epimarket." + check_struck_db(obj.getClass().getSimpleName()) + " (" + key + ") VALUES (" + value + ");";
 				Execute_query("Insert", sql);
-				System.out.println("fin de insert(manager)");
+			}
+			catch (Exception e) // INSERT INTO epimarket.USER (firstName, lastName, email, userId) VALUES ("test1", "test2", "test3", 1);
+			{
+				
+			}		
+		}			
+		
+		
+		
+		// DELETE
+		// changer le nom des ids et mettre getid partout et dans xml
+		
+		
+		public void deleteSqlLite(Object obj)
+		{
+			try
+			{
+				Method[] 	tab_method 	=	obj.getClass().getMethods();
+				String		sql			=	"DELETE FROM epimarket." + check_struck_db(obj.getClass().getSimpleName()) + " WHERE ";
+				
+				for (int i = 0; i < tab_method.length; i++)
+				{
+					if (tab_method[i].getName().equals("getId"))
+						sql += check_struck_db_attribue(tab_method[i].getName().subSequence(3, tab_method[i].getName().length()).toString()) + " = " + tab_method[i].invoke(obj);
+				}
+				Execute_query("Delete", sql);
+			}
+			catch (Exception e) // DELETE FROM epimarket.USER WHERE userId = 1;
+			{
+					
+			}
+		}
+		
+		// UPDATE
+		public void updateSqlLite(Object obj)
+		{
+			try
+			{/*
+				Method[] 	tab_method 	=	obj.getClass().getMethods();
+				String		sql			=	"UPDATE " + check_struck_db(obj.getClass().getSimpleName()) + " SET ";
+				
+				for (int i = 0; i < tab_method.length; i++)
+				{
+					if (tab_method[i].getName().subSequence(0, 3).equals("get") && !(tab_method[i].getName().equals("getClass")))
+						sql += "'" + check_struck_db_attribue(tab_method[i].getName().subSequence(3, tab_method[i].getName().length()).toString()) + "'='" + tab_method[i].invoke(obj) + "',";
+				}
+				sql = sql.substring(0, sql.length() - 1);
+				sql += ";";
+				Execute_query("Update", sql);*/
+				deleteSqlLite(obj);
+				insertSqlLite(obj);
 			}
 			catch (Exception e)
 			{
 				
-			}		
+			}
 		}
+		
+		public void selectSqlLite(String sql)
+		{
+			try
+			{
+				ArrayList<User> collUser = new ArrayList<User>();
+				 
+				    myState				=	myConnect.createStatement();
+				    myPreparedStatement	=	myConnect.prepareStatement(sql);
+					myResultSet 		= 	myPreparedStatement.executeQuery();
+					
+					
+					
+				    User user = null;
+				     
+				    while (myResultSet.next()) {
+
+				    	user = new User();
+				
+				    	myResultSetMetaData = myResultSet.getMetaData();
+					
+					for (int i = 0; i != myResultSetMetaData.getColumnCount(); i++)
+					{
+						System.out.println("type = " + myResultSetMetaData.getColumnTypeName(i + 1));
+						System.out.println("column_name = " + myResultSetMetaData.getColumnName(i + 1));
+						
+						if (myResultSetMetaData.getColumnTypeName(i + 1) == "VARCHAR")
+							BeanUtils.setProperty(user, "set" + myResultSetMetaData.getColumnName(i + 1), myResultSet.getString(i + 1)); // probleme de case (maj) // si tous change att au id pour insert ...
+						else
+							BeanUtils.setProperty(user, "set" + myResultSetMetaData.getColumnName(i + 1), myResultSet.getInt(i + 1));
+					}
+					//System.out.println("\n");
+					/*
+				      user.setFirstName(myResultSet.getString(1));
+				      user.setLastName( myResultSet.getString(2) );
+				      user.setEmail(myResultSet.getString(3));
+				      user.setId(myResultSet.getInt(4));*/
+				 
+				      collUser.add( user );
+				    }
+				    
+				    for (int i= 0; i != collUser.size(); i++)
+				    {
+				    	System.out.println("Ligne " + i + " = \nfirstName = " + collUser.get(i).getFirstName()+ "\tlastName = " + collUser.get(i).getLastName()+ "\temail = " + collUser.get(i).getEmail()+ "\tid = " + collUser.get(i).getId());
+				    }
+				    
+			}
+			catch (SQLException e)                 	{System.out.println("Connexion au DBManager : Erreur interne SQL: " + e.toString()); 			e.printStackTrace();}        
+            catch (Exception e)                 	{System.out.println("Connexion au DBManager : Operation non valide: " + e.toString());         	e.printStackTrace();}
+			
+		}
+		/*
+		 * PARCOURIR LES COLUMNS UNE PAR UNE
+		 * ResultSetMetaData rsmd = rs.getMetaData(); // Récupération des métadonnées
+ 
+			for (int i = 1; i <= rsmd.getColumnCount(); i++){
+      			record.add(rs.getString(i));
+			}
+		 * 
+		 */
+				
+				
+				/*
+				System.out.println("sql = " + sql);
+				List<Object> 	list 	= new ArrayList<Object>();
+				
+				myState				=	myConnect.createStatement();
+				myResultSet 		= 	myPreparedStatement.executeQuery(sql);
+	            System.out.println("Select done");
+	            Object obj;
+	            
+	            while (myResultSet.next())
+	            {
+	            	try{
+	            		System.out.println("resultset = " + myResultSet);
+	            	}
+	            	catch (Exception e){}
+	            }
+			}
+			catch (SQLException e)                 	{System.out.println("Connexion au DBManager : Erreur interne SQL: " + e.toString()); 			e.printStackTrace();}        
+            catch (Exception e)                 	{System.out.println("Connexion au DBManager : Operation non valide: " + e.toString());         	e.printStackTrace();}     */   
+					
 		
 		public String	check_struck_db(String name)
 		{
@@ -122,92 +249,49 @@ public class DBManager
 			
 			for (int j = 0; j != dbConfig.getDBList().size(); j++)
 			{
-			//System.out.println("-Ligne--> class_name = " + dbConfig.getDBList().get(j).getClass_name() + "|\t, db_name = " + dbConfig.getDBList().get(j).getDb_name());
 				if (dbConfig.getDBList().get(j).getClass_name().equalsIgnoreCase(name))
 				{
 					res =  dbConfig.getDBList().get(j).getDb_name();
-					System.out.println("fin de check), = " + res);
 					return res;
 				}
 				
 			}	
-			System.out.println("fin de check avec res = " + res + "|\n");
 			return res;
 		}
 		
-		
-		
-		
-		// DELETE
-		public void Delete_sql_lite(Object obj)
+		public String	check_struck_db_attribue(String name)
 		{
-			try
+			String res = "";
+			
+			for (int j = 0; j != dbConfig.getDBList().size(); j++)
 			{
-				Method[] 	tab_method 	=	obj.getClass().getMethods();
-				String		sql			=	"DELETE FROM " + obj.getClass().getName().toUpperCase() + " WHERE ";
-				
-				for (int i = 0; i < tab_method.length; i++)
+				for (int i = 0; i != dbConfig.getDBList().get(j).getColumns().size(); i++)
 				{
-					if (tab_method[i].getName().subSequence(0, 5).equals("getId"))
-						sql += tab_method[i].getName().subSequence(3, tab_method[i].getName().length()).toString() + " = " + tab_method[i].invoke(obj);
+					if (dbConfig.getDBList().get(j).getColumns().get(i).getclass_name().equalsIgnoreCase(name))
+					{
+						res =  dbConfig.getDBList().get(j).getColumns().get(i).getdb_column();
+						return res;
+					}
 				}
-				Execute_query("Delete", sql);
-			}
-			catch (Exception e)
-			{
-					
-			}
-		}
-		
-		// UPDATE
-		public void Update_sql_lite(Object obj)
-		{
-			try
-			{
-				Method[] 	tab_method 	=	obj.getClass().getMethods();
-				String		sql			=	"UPDATE " + obj.getClass().getName().toUpperCase() + " SET ";
 				
-				for (int i = 0; i < tab_method.length; i++)
-				{
-					if (tab_method[i].getName().subSequence(0, 3).equals("get"))
-						sql += "'" + tab_method[i].getName().subSequence(3, tab_method[i].getName().length()).toString() + "'='" + tab_method[i].invoke(obj) + "',";
-				}
-				sql = sql.substring(0, sql.length() - 1);
-				Execute_query("Update", sql);
-			}
-			catch (Exception e)
-			{
-				
-			}
+			}	
+			return res;
 		}
-		
-		// SELECT !!! executeQuery pas update
-		public void Select_sql(Object obj)
-		{
-			try
-			{	
 
-			}
-			catch (Exception e)
-			{
-						
-			}
-					
-		}
 		
 		public void	Execute_query(String name_query, String query)
 		{
 			try
 			{
-				System.out.println("debut execute query (Manager)");
-				Statement myState		=	myConnect.createStatement();
+				System.out.println("Query = " + query);
 				
-				myState.executeUpdate(query);
-				System.out.println(query + " done");
-				System.out.println("fin execute query (Manager)");
-			} catch (Exception e)
-			{
+				myState				=	myConnect.createStatement();
+				myPreparedStatement = 	myConnect.prepareStatement(query);
 				
-			}
-		}
+				myPreparedStatement.executeUpdate(query);
+				System.out.println(name_query + " done\n");
+			} 
+			catch (SQLException e)                 	{System.out.println("Connexion au DBManager : Erreur interne SQL: " + e.toString()); 			e.printStackTrace();}        
+            catch (Exception e)                 	{System.out.println("Connexion au DBManager : Operation non valide: " + e.toString());         	e.printStackTrace();}        
+    }
 }

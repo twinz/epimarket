@@ -6,7 +6,7 @@ public class Game
 	private String		description;
 	private	Integer		prix;
 	private Integer		reduction;
-	private Integer		gameId;
+	private Integer		Id;
 	private Integer		coefBonus		= 20;
 	private Integer 	gameBonus		= 15;		
 
@@ -31,12 +31,12 @@ public 	String 		getTitre() 								{return titre;						}
 public 	String 		getDescription() 						{return description;				}
 public 	Integer 	getPrix() 								{return prix;						}
 public 	Integer 	getReduction() 							{return reduction;					}
-public 	Integer 	getGameId() 							{return gameId;						}
+public 	Integer 	getId() 								{return Id;							}
 
 public 	void 		setTitre(		String 	titre		) 	{this.titre 		= titre;		}
 public 	void 		setDescription(	String 	description	) 	{this.description 	= description;	}
 public	void 		setPrix(		Integer prix		) 	{this.prix 			= prix;			}
 public 	void 		setReduction(	Integer reduction	) 	{this.reduction		= reduction;	}
-public 	void 		setGameId(		Integer gameId		) 	{this.gameId 		= gameId;		}
+public 	void 		setId(			Integer Id			) 	{this.Id 			= Id;			}
 	
 }
