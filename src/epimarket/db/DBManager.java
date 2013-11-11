@@ -29,6 +29,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import epimarket.xml.*;
+
 import epimarket.model.*;
 
 
@@ -62,22 +64,33 @@ public class DBManager
 				this.strUser 			=	strUser;
 				this.strPass 			=	strPass;
 				this.dbConfig			=	dbConfig;
-			
-				Class.forName(this.strDriver);//
-				myConnect 			=	DriverManager.getConnection(this.strConnectURL, this.strUser, this.strPass);
-				/*myDbMetaData 		=	myConnect.getMetaData();
-
-				System.out.println("DbManager: dbConnect: show DataBase MetaData:");
-				System.out.println("DbManager: dbConnect: productName=" 	+ myDbMetaData.getDatabaseProductName());
-				System.out.println("DbManager: dbConnect: productVersion=" 	+ myDbMetaData.getDatabaseProductVersion());*/
-			}
-			catch (ClassNotFoundException e) 	{System.out.println("dbConnect ClassNotFoundException: " + e.toString()); e.printStackTrace();}	
+			}	
 			catch (Exception e) 				{System.out.println("dbConnect Exception: " + e.toString()); 	e.printStackTrace();}		
 		}
 		
+		public void connect()
+		{
+			try
+			{
+				Class.forName(this.strDriver);
+				myConnect =	DriverManager.getConnection(this.strConnectURL, this.strUser, this.strPass);
+			}
+			catch (ClassNotFoundException e) 	{System.out.println("Connexion au DBManager : Classe non existente: " + e.toString());}	
+			catch (SQLException e) 				{System.out.println("Connexion au DBManager : Erreur interne SQL: " + e.toString());}				
+		}
+		
+		public void	disconnect()
+		{
+			try
+			{
+				myState.close();
+				myConnect.close();
+			}
+			catch (SQLException e)				{System.out.println("Deconnexion au DBManager: Erreur interne SQL: " + e.toString());}
+		}
 		
 		// INSERT
-		public void insertSqlLite(Object obj) // METHODE
+		public void create(Object obj) // METHODE
 		{
 			try
 			{
@@ -116,7 +129,7 @@ public class DBManager
 		// changer le nom des ids et mettre getid partout et dans xml
 		
 		
-		public void deleteSqlLite(Object obj)
+		public void delete(Object obj)
 		{
 			try
 			{
@@ -137,7 +150,7 @@ public class DBManager
 		}
 		
 		// UPDATE
-		public void updateSqlLite(Object obj)
+		public void update(Object obj)
 		{
 			try
 			{/*
@@ -152,8 +165,8 @@ public class DBManager
 				sql = sql.substring(0, sql.length() - 1);
 				sql += ";";
 				Execute_query("Update", sql);*/
-				deleteSqlLite(obj);
-				insertSqlLite(obj);
+				delete(obj);
+				create(obj);
 			}
 			catch (Exception e)
 			{
@@ -161,10 +174,10 @@ public class DBManager
 			}
 		}
 		
-		public void selectSqlLite(String sql)
+		public void read(String sql)
 		{
 			try
-			{
+			{/*
 				ArrayList<User> collUser = new ArrayList<User>();
 				 
 				    myState				=	myConnect.createStatement();
@@ -192,11 +205,11 @@ public class DBManager
 							BeanUtils.setProperty(user, "set" + myResultSetMetaData.getColumnName(i + 1), myResultSet.getInt(i + 1));
 					}
 					//System.out.println("\n");
-					/*
-				      user.setFirstName(myResultSet.getString(1));
-				      user.setLastName( myResultSet.getString(2) );
-				      user.setEmail(myResultSet.getString(3));
-				      user.setId(myResultSet.getInt(4));*/
+					
+				     // user.setFirstName(myResultSet.getString(1));
+				      //user.setLastName( myResultSet.getString(2) );
+				      //user.setEmail(myResultSet.getString(3));
+				      //user.setId(myResultSet.getInt(4));
 				 
 				      collUser.add( user );
 				    }
@@ -204,10 +217,10 @@ public class DBManager
 				    for (int i= 0; i != collUser.size(); i++)
 				    {
 				    	System.out.println("Ligne " + i + " = \nfirstName = " + collUser.get(i).getFirstName()+ "\tlastName = " + collUser.get(i).getLastName()+ "\temail = " + collUser.get(i).getEmail()+ "\tid = " + collUser.get(i).getId());
-				    }
+				    }*/
 				    
 			}
-			catch (SQLException e)                 	{System.out.println("Connexion au DBManager : Erreur interne SQL: " + e.toString()); 			e.printStackTrace();}        
+			//catch (SQLException e)                 	{System.out.println("Connexion au DBManager : Erreur interne SQL: " + e.toString()); 			e.printStackTrace();}        
             catch (Exception e)                 	{System.out.println("Connexion au DBManager : Operation non valide: " + e.toString());         	e.printStackTrace();}
 			
 		}

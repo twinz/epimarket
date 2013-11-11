@@ -22,46 +22,31 @@ public class DBFacade
 		this.dbManager = new DBManager("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/test", "root", "root", dbConfig);
 	}
 	
-	public void insert(Object obj){
-		dbManager.insertSqlLite(obj);
-	}
-	
-	public void delete(Object obj){
-		dbManager.deleteSqlLite(obj);
-	}
-	
-	public void update(Object obj){
-		dbManager.updateSqlLite(obj);
-	}
-
-	public void select(String sql)
+	public	void	create(Object obj)
 	{
-		dbManager.selectSqlLite(sql);
+		dbManager.connect();
+		dbManager.create(obj);
+		dbManager.disconnect();
 	}
 	
-	public DBConfig getDbConfig() {
-		return dbConfig;
-	}
-
-	public void setDbConfig(DBConfig dbConfig) {
-		this.dbConfig = dbConfig;
-	}
-
-	public DBManager getDbManager() {
-		return dbManager;
-	}
-
-	public DBFactory getDbfactory() {
-		return dbfactory;
-	}
-
-	public void setDbManager(DBManager dbManager) {
-		this.dbManager = dbManager;
-	}
-
-	public void setDbfactory(DBFactory dbfactory) {
-		this.dbfactory = dbfactory;
+	public	void	read(String str)
+	{
+		dbManager.connect();
+		dbManager.read(str);
+		dbManager.disconnect();
 	}
 	
+	public	void	update(Object obj)
+	{
+		dbManager.connect();
+		dbManager.update(obj);
+		dbManager.disconnect();
+	}
 	
+	public	void	delete(Object obj)
+	{
+		dbManager.connect();
+		dbManager.delete(obj);
+		dbManager.disconnect();
+	}
 }

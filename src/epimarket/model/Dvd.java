@@ -1,31 +1,33 @@
 package epimarket.model;
 
-public class Dvd
+/** 
+ * @author Dimitri Dean DARSEYNE (D3), 
+ * Published by Short-Circuit under Creative Commons (CC) Licensing: 
+ * Authorship/Paternity, NO Commercial Use, NO Derivative
+ * Please check for more informations:
+ * http://creativecommons.org/licenses/by-nc-nd/2.0/
+ *
+ * Auteur Dimitri Dean DARSEYNE (D3),
+ * Publié par Short-Circuit sous license Creative Commons (CC):
+ * Paternité, PAS d'Utilisation Commerciale, pas de Dérivés/Modifications
+ * Pour plus d'informations, se rendre sur:
+ * http://creativecommons.org/licenses/by-nc-nd/2.0/fr/ 
+ * 
+ * @since Short-Circuit 1999
+ */
+
+public class Dvd extends AbstractProduct
 {
-	private	String		titre;
-	private String		description;
-	private	Integer		prix;
-	private Integer		reduction;
-	private Integer		Id;
+	//furthermore members (fields, methods) to be added...
+	
+	
+	public Dvd() {}	
 
-	public Dvd(){}
+	/** Constructor overloading:  */
+	public Dvd(String id, String designation, Category category, int price)
+	{
+		createStructure(id, designation, category, price);	
+	}
 
 	
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-//Getters & Setters
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	
-	public 	String 		getTitre() 								{return titre;						}
-	public 	String 		getDescription() 						{return description;				}
-	public 	Integer 	getPrix() 								{return prix;						}
-	public 	Integer 	getReduction() 							{return reduction;					}
-	public 	Integer 	getId() 								{return Id;						}
-
-	public 	void 		setTitre(		String 	titre		) 	{this.titre 		= titre;		}
-	public 	void 		setDescription(	String 	description	) 	{this.description 	= description;	}
-	public	void 		setPrix(		Integer prix		) 	{this.prix 			= prix;			}
-	public 	void 		setReduction(	Integer reduction	) 	{this.reduction		= reduction;	}
-	public 	void 		setId(			Integer Id			) 	{this.Id 			= Id;			}
 }
-

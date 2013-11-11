@@ -30,13 +30,15 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import epimarket.xml.*;
+
 public class Parser {
 
 	public DBConfig dbConfig = new DBConfig();
-	public DBLigne dbLigne = new DBLigne();
-	public DBColumn dbColumn = new DBColumn();
-	public ArrayList<DBColumn> listColumn = new ArrayList<DBColumn>();
-	public ArrayList<DBLigne> listLigne = new ArrayList<DBLigne>();
+	public XMLLigne dbLigne = new XMLLigne();
+	public XMLColumn dbColumn = new XMLColumn();
+	public ArrayList<XMLColumn> listColumn = new ArrayList<XMLColumn>();
+	public ArrayList<XMLLigne> listLigne = new ArrayList<XMLLigne>();
 
 	public Parser() {
 		init();
@@ -81,7 +83,7 @@ public class Parser {
 				if (node.getLocalName() == "Column") {
 					{
 						listColumn.add(dbColumn);
-						dbColumn = new DBColumn();
+						dbColumn = new XMLColumn();
 					}
 				}
 			}
@@ -115,9 +117,9 @@ public class Parser {
 
 	public void add() {
 		dbLigne.setColumns(listColumn);
-		listColumn = new ArrayList<DBColumn>();
+		listColumn = new ArrayList<XMLColumn>();
 		listLigne.add(dbLigne);
-		dbLigne = new DBLigne();
+		dbLigne = new XMLLigne();
 	}
 
 	public void aff() {

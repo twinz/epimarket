@@ -1,34 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<db_xml>               
-        <Ligne class_name="User" db_name="USER">
-        	<Column class_name="firstName"	db_column="firstName"	type="string">	</Column>
-        	<Column class_name="lastName"	db_column="lastName" 	type="string">	</Column>
-        	<Column class_name="email"		db_column="email" 		type="string">	</Column>
-        	<Column class_name="Id"			db_column="Id" 			type="int">		</Column>                       
+<db_xml> 
+		<orm-config>
+    		<Column class_name="orm.connection.driver_class"	db_column="com.mysql.jdbc.Driver" />
+    		<Column class_name="orm.connection.url" 			db_column="jdbc:mysql://localhost:3306/epimarket" />
+    		<Column class_name="orm.connection.username" 		db_column="root" />
+    		<Column class_name="orm.connection.password" 		db_column="root" />
+		</orm-config> 
+		             
+        <Ligne class_name="Order" db_name="ORDER">
+        	<Column class_name="client"				db_column="CLIENT"				type="Client"/>
+        	<Column class_name="lines"				db_column="LINES" 				type="OrderLine"/>
+        	<Column class_name="state"				db_column="STATE" 				type="EOrderState"/>
+        	<Column class_name="dateOrderStarted"	db_column="DATEORDERSTARTED"	type="Date"/> 
+        	<Column class_name="dateOrderEnded"		db_column="DATEORDERENDED" 		type="Date"/>                     
+        </Ligne>
+        
+        <Ligne class_name="Client" db_name="CLIENT">
+        	<Column class_name="billingAddress"		db_column="BILLINGADDRESS"		type="Address"/>
+        	<Column class_name="deliveryAddress"	db_column="DELIVERYADDRESS" 	type="Address"/>
+        	<Column class_name="firstName"			db_column="FIRSTNAME" 			type="String"/>
+        	<Column class_name="lastName"			db_column="LASTNAME" 			type="String"/>                     
+        </Ligne>
+        
+        <Ligne class_name="OrderLine" db_name="ORDERLIGNE">
+        	<Column class_name="product"			db_column="PRODUCT"				type="AbstractProduct"/>
+        	<Column class_name="quantity"			db_column="QUANTITY" 			type="Integer"/>                  
+        </Ligne>
+        
+        <Ligne class_name="AbstractProduct" db_name="ABSTRACTPRODUCT">
+        	<Column class_name="category"			db_column="CATEGORY"			type="Category"/>
+        	<Column class_name="id"					db_column="ID" 					type="String"/>
+        	<Column class_name="designation"		db_column="DESIGNATION" 		type="String"/>
+        	<Column class_name="type"				db_column="TYPE"				type="String"/> 
+        	<Column class_name="price"				db_column="PRICE" 				type="Integer"/>                     
+        </Ligne>
+        
+        <Ligne class_name="Category" db_name="CATEGORY">
+        	<Column class_name="name"				db_column="NAME"				type="String"/>                
+        </Ligne>
+        
+        <Ligne class_name="Address" db_name="ADDRESS">
+        	<Column class_name="streetNumber"		db_column="STREETNUMBER"		type="String"/>
+        	<Column class_name="streetName"			db_column="STREETNAME" 			type="String"/>
+        	<Column class_name="city"				db_column="CITY" 				type="String"/>
+        	<Column class_name="zipCode"			db_column="ZIPCODE"				type="String"/> 
+        	<Column class_name="country"			db_column="COUNTRY" 			type="String"/>                     
         </Ligne>
   
-        <Ligne class_name="Dvd" db_name="DVD">
-            <Column class_name="titre" 		db_column="titre" 		type="String">	</Column>
-            <Column class_name="description" db_column="description" type="string">	</Column>
-            <Column class_name="prix" 		db_column="prix" 		type="int">		</Column>
-            <Column class_name="reduction"	db_column="reduction" 	type="int">		</Column>
-            <Column class_name="Id" 		db_column="Id" 			type="int">		</Column>
-         </Ligne>
-                
-         <Ligne class_name="K7" db_name="K7">
-            <Column class_name="titre" 		db_column="titre" 		type="String">	</Column>
-            <Column class_name="description" db_column="description" type="string">	</Column>
-            <Column class_name="prix" 		db_column="prix" 		type="int">		</Column>
-            <Column class_name="reduction"	db_column="reduction" 	type="int">		</Column>
-            <Column class_name="Id" 		db_column="Id" 			type="int">		</Column>
-         </Ligne>
-                
-         <Ligne class_name="Game" db_name="GAME">
-            <Column class_name="titre" 		db_column="titre" 		type="String">	</Column>
-            <Column class_name="description" db_column="description" type="string">	</Column>
-            <Column class_name="prix" 		db_column="prix" 		type="int">		</Column>
-            <Column class_name="reduction"	db_column="reduction" 	type="int">		</Column>
-            <Column class_name="Id" 		db_column="Id" 			type="int">		</Column>
-         </Ligne>
-
+        
 </db_xml>
