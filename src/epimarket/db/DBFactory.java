@@ -1,0 +1,21 @@
+package epimarket.db;
+
+import epimarket.xml.Parser;
+
+public class DBFactory
+{	
+	public  Parser				parser;
+	
+	public DBFactory()
+	{
+		this.parser	= new Parser();
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Getters & Setters
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	public Parser getParser() 				{return parser;}
+
+	public void setParser(Parser parser) 	{this.parser = parser;}
+}
