@@ -1,6 +1,9 @@
 package epimarket.dao;
 
+import java.util.List;
+
 import	epimarket.model.*;
+import epimarket.dao.idao.IDAOAddress;
 import	epimarket.db.*;
 
 public class DAOAddress extends AbstractDAO implements IDAOAddress
@@ -8,24 +11,27 @@ public class DAOAddress extends AbstractDAO implements IDAOAddress
 	public DAOAddress(){
 		super.dbFacade = new DBFacade();
 	}
-	
-	public void create(Address obj)
+	/*
+	public void create(Integer obj)
 	{
 		super.create(obj);
 	}
 	
-	public void read(String str)
+	*/
+	public List read()
 	{
-		super.read(str);
+		//return super.read(str);
+		return super.read(Address.class.getSimpleName());
 	}
+	/*
 	
-	public void update(Address obj)
+	public void update(Integer obj)
 	{
 		super.update(obj);
 	}
 	
-	public void delete(Address obj)
+	public void delete(Integer obj)
 	{
 		super.delete(obj);
-	}
+	}*/
 }

@@ -1,6 +1,11 @@
 package epimarket.dao;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import	epimarket.model.*;
+import epimarket.dao.idao.IDAOClient;
 import	epimarket.db.*;
 
 public class DAOClient extends AbstractDAO implements IDAOClient
@@ -8,16 +13,19 @@ public class DAOClient extends AbstractDAO implements IDAOClient
 	public DAOClient(){
 		super.dbFacade = new DBFacade();
 	}
-	
+	/*
 	public void create(Client obj)
 	{
 		super.create(obj);
 	}
 	
-	public void read(String str)
+	*/
+	public List read()
 	{
-		super.read(str);
+		//return super.read(str);
+		return super.read(Client.class.getSimpleName());
 	}
+	/*
 	
 	public void update(Client obj)
 	{
@@ -27,5 +35,5 @@ public class DAOClient extends AbstractDAO implements IDAOClient
 	public void delete(Client obj)
 	{
 		super.delete(obj);
-	}
+	}*/
 }

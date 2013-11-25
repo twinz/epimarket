@@ -1,6 +1,11 @@
 package epimarket.dao;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import	epimarket.model.*;
+import epimarket.dao.idao.IDAOAbstractProduct;
 import	epimarket.db.*;
 
 public class DAOAbstractProduct extends AbstractDAO implements IDAOAbstractProduct 
@@ -8,16 +13,19 @@ public class DAOAbstractProduct extends AbstractDAO implements IDAOAbstractProdu
 	public DAOAbstractProduct (){
 		super.dbFacade = new DBFacade();
 	}
-	
+	/*
 	public void create(AbstractProduct  obj)
 	{
 		super.create(obj);
 	}
 	
-	public void read(String str)
+	*/
+	public List read()
 	{
-		super.read(str);
+		//return super.read(str);
+		return super.read(AbstractProduct.class.getSimpleName());
 	}
+	/*
 	
 	public void update(AbstractProduct  obj)
 	{
@@ -28,4 +36,9 @@ public class DAOAbstractProduct extends AbstractDAO implements IDAOAbstractProdu
 	{
 		super.delete(obj);
 	}
+	
+	public int objectId(Object obj)
+	{
+		return super.objectId(obj);
+	}*/
 }

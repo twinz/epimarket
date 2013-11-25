@@ -4,41 +4,23 @@ import java.io.File;
 import java.util.*;
 
 import epimarket.db.*;
-import epimarket.model.*;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import org.apache.commons.beanutils.BeanUtils;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
-import java.io.File;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
-import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-
-import epimarket.xml.*;
 
 public class Parser {
 
-	public DBConfig dbConfig = new DBConfig();
-	public XMLLigne dbLigne = new XMLLigne();
-	public XMLColumn dbColumn = new XMLColumn();
-	public ArrayList<XMLColumn> listColumn = new ArrayList<XMLColumn>();
-	public ArrayList<XMLLigne> listLigne = new ArrayList<XMLLigne>();
+	public DBConfig 			dbConfig 	= new DBConfig();
+	public XMLLigne 			dbLigne 	= new XMLLigne();
+	public XMLColumn 			dbColumn 	= new XMLColumn();
+	public ArrayList<XMLColumn> listColumn 	= new ArrayList<XMLColumn>();
+	public ArrayList<XMLLigne> 	listLigne 	= new ArrayList<XMLLigne>();
 
 	public Parser() {
 		init();
@@ -47,11 +29,9 @@ public class Parser {
 
 	public void init() {
 		try {
-
 			DocumentBuilderFactory builderFactory = DocumentBuilderFactory
 					.newInstance();
 			builderFactory.setNamespaceAware(true);
-			builderFactory.setValidating(true);
 			builderFactory.setIgnoringElementContentWhitespace(true);
 
 			DocumentBuilder builder = null;
@@ -68,7 +48,7 @@ public class Parser {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public void ligne(Node node) {
 		try {
 			if (node instanceof Element && node.hasAttributes()) {
@@ -76,7 +56,6 @@ public class Parser {
 				NamedNodeMap attrs = node.getAttributes();
 				for (int i = 0; i < attrs.getLength(); i++) {
 					Attr attribute = (Attr) attrs.item(i);
-
 					stock_data(attribute.getName(), attribute.getValue(),
 							node.getLocalName());
 				}
@@ -87,7 +66,6 @@ public class Parser {
 					}
 				}
 			}
-
 			NodeList list = node.getChildNodes();
 			if (list.getLength() > 0) {
 				for (int i = 0; i < list.getLength(); i++)
@@ -100,6 +78,7 @@ public class Parser {
 		}
 	}
 
+	// dans dbFactory
 	public void stock_data(String name, String value, String ligne_name) {
 		try {
 			if (ligne_name == "Ligne") {
@@ -144,12 +123,6 @@ public class Parser {
 		}
 	}
 
-	public DBConfig getDbConfig() {
-		return dbConfig;
-	}
-
-	public void setDbConfig(DBConfig dbConfig) {
-		this.dbConfig = dbConfig;
-	}
-
+	public DBConfig getDbConfig() 				{return dbConfig;}
+	public void setDbConfig(DBConfig dbConfig) 	{this.dbConfig = dbConfig;}
 }

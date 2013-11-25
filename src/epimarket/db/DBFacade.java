@@ -1,11 +1,8 @@
 package epimarket.db;
 
-import java.util.Vector;
-
-import epimarket.db.*;
-import epimarket.model.*;
-import epimarket.xml.Parser;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class DBFacade
 {	
@@ -13,13 +10,12 @@ public class DBFacade
 	public	DBConfig			dbConfig;
 	public 	DBManager			dbManager;
 	
-	
-	
 	public DBFacade()
 	{
 		dbfactory = new DBFactory();
 		dbConfig = dbfactory.parser.getDbConfig();
-		this.dbManager = new DBManager("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/test", "root", "root", dbConfig);
+		this.dbManager = new DBManager(dbConfig);
+		// dans constructeur dbManager
 	}
 	
 	public	void	create(Object obj)
@@ -29,11 +25,10 @@ public class DBFacade
 		dbManager.disconnect();
 	}
 	
-	public	void	read(String str)
+	public	List	read(Object obj)
 	{
 		dbManager.connect();
-		dbManager.read(str);
-		dbManager.disconnect();
+		return dbManager.read(obj);
 	}
 	
 	public	void	update(Object obj)
@@ -48,5 +43,11 @@ public class DBFacade
 		dbManager.connect();
 		dbManager.delete(obj);
 		dbManager.disconnect();
+	}
+	
+	public	int	objectId(Object obj)
+	{
+		dbManager.connect();
+		return dbManager.objectId(obj);
 	}
 }

@@ -1,5 +1,7 @@
 package epimarket.dao;
 
+import java.util.List;
+
 import	epimarket.db.*;
 
 public abstract class	AbstractDAO
@@ -13,9 +15,9 @@ public abstract class	AbstractDAO
 		dbFacade.create(obj);
 	}
 	
-	public void read(String str)
+	public List read(Object obj)
 	{
-		dbFacade.read(str);
+		return dbFacade.read(obj);
 	}
 	
 	public void update(Object obj)
@@ -26,5 +28,10 @@ public abstract class	AbstractDAO
 	public void delete(Object obj)
 	{
 		dbFacade.delete(obj);
+	}
+	
+	public int objectId(Object obj)
+	{
+		return dbFacade.objectId(obj);
 	}
 }

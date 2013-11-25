@@ -1,42 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <db_xml> 
-		<orm-config>
-    		<Column class_name="orm.connection.driver_class"	db_column="com.mysql.jdbc.Driver" />
-    		<Column class_name="orm.connection.url" 			db_column="jdbc:mysql://localhost:3306/epimarket" />
-    		<Column class_name="orm.connection.username" 		db_column="root" />
-    		<Column class_name="orm.connection.password" 		db_column="root" />
-		</orm-config> 
-		             
-        <Ligne class_name="Order" db_name="ORDER">
-        	<Column class_name="client"				db_column="CLIENT"				type="Client"/>
-        	<Column class_name="lines"				db_column="LINES" 				type="OrderLine"/>
-        	<Column class_name="state"				db_column="STATE" 				type="EOrderState"/>
+        <Ligne class_name="Orders" db_name="ORDERS">
+        	<Depth	class_name="client"				db_column="CLIENT"				type="Client"/>
+        	<Depth 	class_name="lines"				db_column="LINES" 				type="OrderLine"/>
+        	<Depth 	class_name="state"				db_column="STATE" 				type="EOrderState"/>
         	<Column class_name="dateOrderStarted"	db_column="DATEORDERSTARTED"	type="Date"/> 
-        	<Column class_name="dateOrderEnded"		db_column="DATEORDERENDED" 		type="Date"/>                     
+        	<Column class_name="dateOrderEnded"		db_column="DATEORDERENDED" 		type="Date"/>  
+        	<Column class_name="clientId"			db_column="CLIENTID" 			type="Integer"/>
+        	<Column class_name="orderLineId"		db_column="ORDERLINEID" 		type="Integer"/>                     
         </Ligne>
         
-        <Ligne class_name="Client" db_name="CLIENT">
-        	<Column class_name="billingAddress"		db_column="BILLINGADDRESS"		type="Address"/>
-        	<Column class_name="deliveryAddress"	db_column="DELIVERYADDRESS" 	type="Address"/>
+        <Ligne class_name="Client" db_name="CLIENT">	
+        	<Depth 	class_name="address"			db_column="ADDRESS"				type="address"/>
         	<Column class_name="firstName"			db_column="FIRSTNAME" 			type="String"/>
-        	<Column class_name="lastName"			db_column="LASTNAME" 			type="String"/>                     
-        </Ligne>
-        
-        <Ligne class_name="OrderLine" db_name="ORDERLIGNE">
-        	<Column class_name="product"			db_column="PRODUCT"				type="AbstractProduct"/>
-        	<Column class_name="quantity"			db_column="QUANTITY" 			type="Integer"/>                  
-        </Ligne>
-        
-        <Ligne class_name="AbstractProduct" db_name="ABSTRACTPRODUCT">
-        	<Column class_name="category"			db_column="CATEGORY"			type="Category"/>
-        	<Column class_name="id"					db_column="ID" 					type="String"/>
-        	<Column class_name="designation"		db_column="DESIGNATION" 		type="String"/>
-        	<Column class_name="type"				db_column="TYPE"				type="String"/> 
-        	<Column class_name="price"				db_column="PRICE" 				type="Integer"/>                     
-        </Ligne>
-        
-        <Ligne class_name="Category" db_name="CATEGORY">
-        	<Column class_name="name"				db_column="NAME"				type="String"/>                
+        	<Column class_name="lastName"			db_column="LASTNAME" 			type="String"/>   
+        	<Column class_name="addressId"			db_column="ADDRESSID" 			type="int"/>                   
         </Ligne>
         
         <Ligne class_name="Address" db_name="ADDRESS">
@@ -46,6 +24,38 @@
         	<Column class_name="zipCode"			db_column="ZIPCODE"				type="String"/> 
         	<Column class_name="country"			db_column="COUNTRY" 			type="String"/>                     
         </Ligne>
-  
         
+        <Ligne class_name="OrderLine" db_name="ORDERLINE">
+        	<Depth 	class_name="product"			db_column="PRODUCT"				type="AbstractProduct"/>
+        	<Column class_name="quantity"			db_column="QUANTITY" 			type="Integer"/>       
+        	<Column class_name="id"					db_column="Id" 					type="Integer"/>
+        	<Column class_name="abstractProductId"			db_column="ABSTRACTPRODUCTID" 			type="Integer"/>	           
+        </Ligne>
+        
+        <Ligne class_name="AbstractProduct" db_name="ABSTRACTPRODUCT">
+        	<Column class_name="id"					db_column="ID" 					type="Integer"/>
+        	<Column class_name="designation"		db_column="DESIGNATION" 		type="String"/>
+        	<Column class_name="price"				db_column="PRICE" 				type="Integer"/> 
+        	<Column class_name="categoryId"			db_column="CATEGORYID" 			type="Integer"/>                     
+        </Ligne>
+        
+        <Ligne class_name="Dvd" db_name="DVD">
+        	<Depth 	class_name="category"			db_column="CATEGORY"			type="Category"/>
+        	<Column class_name="id"					db_column="ID" 					type="Integer"/>
+        	<Column class_name="designation"		db_column="DESIGNATION" 		type="String"/>
+        	<Column class_name="price"				db_column="PRICE" 				type="Integer"/>   
+        	<Column class_name="categoryId"			db_column="CATEGORYID" 			type="Integer"/>                   
+        </Ligne>
+        
+        <Ligne class_name="Game" db_name="GAME">
+        	<Depth 	class_name="category"			db_column="CATEGORY"			type="Category"/>
+        	<Column class_name="id"					db_column="ID" 					type="Integer"/>
+        	<Column class_name="designation"		db_column="DESIGNATION" 		type="String"/>
+        	<Column class_name="price"				db_column="PRICE" 				type="Integer"/>
+        	<Column class_name="categoryId"			db_column="CATEGORYID" 			type="Integer"/>                      
+        </Ligne>
+
+        <Ligne class_name="Category" db_name="CATEGORY">
+        	<Column class_name="name"				db_column="NAME"				type="String"/>                
+        </Ligne>        
 </db_xml>
